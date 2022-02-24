@@ -16,12 +16,17 @@ const socketIdToUserName = {}
 
 io.on('connection', (socket) => {
     socket.on('login', ({userName}) => {
-        userNameToSocketId[userName] = socket.id
-        socketIdToUserName[socket.id] = userName
-        console.log(userNameToSocketId)
-        console.log(socketIdToUserName)
-        socket.broadcast.emit('loginUser', userName)
-        socket.emit('returnLoginResponse', Object.keys(userNameToSocketId))
+        // 이미 존재하는 아이디 체크
+        if(!userNameToSocketId.hasOwnProperty(userName)) {
+            console.log(1, userName, userNameToSocketId)
+            userNameToSocketId[userName] = socket.id
+            socketIdToUserName[socket.id] = userName
+            socket.broadcast.emit('loginUser', userName)
+            socket.emit('returnLoginResponse', true,Object.keys(userNameToSocketId))
+        } else {
+            console.log(2, userName, userNameToSocketId)
+            socket.emit('returnLoginResponse', false, null)
+        }
     })
 
     socket.on('sendMessage', ({targetUserName, message}) => {
