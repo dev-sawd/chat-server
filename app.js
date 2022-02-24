@@ -39,8 +39,7 @@ io.on('connection', (socket) => {
         delete userNameToSocketId[userName]
         delete socketIdToUserName[socket.id]
 
-        console.log(userNameToSocketId)
-        console.log(socketIdToUserName)
+        socket.broadcast.emit('logoutUser', userName)
     })
 })
 
