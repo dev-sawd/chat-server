@@ -29,8 +29,10 @@ io.on('connection', (socket) => {
         }
     })
 
-    socket.on('sendMessage', ({targetUserName, message}) => {
-        io.to(userNameToSocketId[targetUserName]).emit('message', ({targetUserName, message}))
+    socket.on('sendMessage', ({sendUserName, targetUserName, message}) => {
+        console.log('sendMessage', sendUserName, targetUserName, message)
+        io.to(userNameToSocketId[sendUserName]).emit('message', ({sendUserName, targetUserName, message}))
+        io.to(userNameToSocketId[targetUserName]).emit('message', ({sendUserName, targetUserName, message}))
     })
 
     socket.on('disconnect', () => {
