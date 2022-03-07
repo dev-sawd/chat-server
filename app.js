@@ -18,19 +18,16 @@ io.on('connection', (socket) => {
     socket.on('login', ({userName}) => {
         // 이미 존재하는 아이디 체크
         if(!userNameToSocketId.hasOwnProperty(userName)) {
-            console.log(1, userName, userNameToSocketId)
             userNameToSocketId[userName] = socket.id
             socketIdToUserName[socket.id] = userName
             socket.broadcast.emit('loginUser', userName)
             socket.emit('returnLoginResponse', true,Object.keys(userNameToSocketId))
         } else {
-            console.log(2, userName, userNameToSocketId)
             socket.emit('returnLoginResponse', false, null)
         }
     })
 
     socket.on('sendMessage', ({sendUserName, targetUserName, message}) => {
-        console.log('sendMessage', sendUserName, targetUserName, message)
         if(sendUserName !== targetUserName) {
             io.to(userNameToSocketId[sendUserName]).emit('message', ({sendUserName, targetUserName, message}))
             io.to(userNameToSocketId[targetUserName]).emit('message', ({sendUserName, targetUserName, message}))
