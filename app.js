@@ -14,11 +14,11 @@ const socketIdToUserName = {}
 io.on('connection', (socket) => {
     socket.on('login', ({userName}) => {
         // 이미 존재하는 아이디 체크
-        if(!userNameToSocketId.hasOwnProperty(userName)) {
+        if (!userNameToSocketId.hasOwnProperty(userName)) {
             userNameToSocketId[userName] = socket.id
             socketIdToUserName[socket.id] = userName
             socket.broadcast.emit('loginUser', userName)
-            socket.emit('returnLoginResponse', true,Object.keys(userNameToSocketId))
+            socket.emit('returnLoginResponse', true, Object.keys(userNameToSocketId))
         } else {
             socket.emit('returnLoginResponse', false, null)
         }
