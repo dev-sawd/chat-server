@@ -5,6 +5,9 @@ socket을 이용한 채팅 앱의 server
 # 설치
 
 ```
+cd workspace
+git clone https://github.com/dev-sawd/chat-server
+cd chat-server
 npm install
 ```
 
